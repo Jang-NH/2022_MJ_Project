@@ -25,4 +25,12 @@ public class UserController {
         return null;
     }
 
+    // 로그인 폼
+    @GetMapping("login")
+    public String loginForm() { return  "user/login"; }
+
+    // 로그인
+
+    // 카카오 로그인 API
+
 }
