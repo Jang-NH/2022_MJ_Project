@@ -33,4 +33,12 @@ public class UserController {
 
     // 카카오 로그인 API
 
+    // 로그아웃
+
+    // 마이페이지
+
+    // 관리자 페이지
+
+    // 회원 목록
+
 }
