@@ -6,13 +6,14 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Getter @Setter
-@Table(name = "board_table")
-public class BoardEntity {
+@Getter
+@Setter
+@Table(name = "photo_table")
+public class PhotoBoardEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "board_id")
-    public Long id;
+    @Column(name = "photo_number")
+    private Long id;
 
 }
