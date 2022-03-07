@@ -1,6 +1,6 @@
 # 서버 정보
 server:
-  port: 8081
+  port: 8093
 
 # DB 접속 정보
 spring:
