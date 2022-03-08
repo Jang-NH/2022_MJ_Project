@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -27,15 +29,34 @@ public class UserEntity {
     @Column(length = 50)
     private String userPassword;
 
-    @Column(length = 200)
-    private String userProfilename;
-
     @NotNull
     @Column(length = 50, unique = true)
     private String userNickname;
 
+    @Column(length = 200)
+    private String userProfilename;
+
     @Column(length = 20)
     private String userMbti;
+
+    // MapBoardEntity 와의 연관관계 (회원 : 게시글 = 1:n)
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<MapBoardEntity> mapBoardEntityList = new ArrayList<>();
+
+    // MapHeartEntity 와의 연관관계 (회원 : 찜 = 1:n)
+//    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+//    private List<MapHeartEntity> mapHeartEntityList = new ArrayList<>();
+
+    // CommentEntity 와의 연관관계 (회원 : 댓글 = 1:n)
+//    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+//    private List<CommentEntity> commentEntityList = new ArrayList<>();
+
+    // CommentReplyEntity 와의 연관관계 (회원 : 답글 = 1:n)
+
+    // PhotoBoardEntity 와의 연관관계 (회원 : 게시글 = 1:n)
+
+    // PhotoHeartEntity 와의 연관관계 (회원 : 좋아요 = 1:n)
+
 
     public static UserEntity toSaveUser(UserSaveDTO userSaveDTO) {
         UserEntity userEntity = new UserEntity();
@@ -46,7 +67,6 @@ public class UserEntity {
 
         return userEntity;
     }
-
 
     public static UserEntity toUpdateUser(UserUpdateDTO userUpdateDTO) {
         UserEntity userEntity = new UserEntity();
