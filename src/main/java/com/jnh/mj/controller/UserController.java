@@ -103,12 +103,17 @@ public class UserController {
     public String kakaoLogin(@RequestParam(value = "code", required = false) String code, Model model, HttpSession session) throws Exception {
         String access_Token = us.getKaKaoAccessToken(code);
         HashMap<String, Object> userInfo = us.getUserInfo(access_Token);
-        System.out.println("###access_Token### : " + access_Token);
-        System.out.println("###userEmail### : " + userInfo.get("userEmail"));
-        System.out.println("###userNick### : " + userInfo.get("userNick"));
-        System.out.println("###userProfile### : " + userInfo.get("userProfile"));
+        System.out.println("access_Token : " + access_Token);
+        System.out.println("userEmail : " + userInfo.get("userEmail"));
+        System.out.println("userNick : " + userInfo.get("userNick"));
+        System.out.println("userProfile : " + userInfo.get("userProfile"));
 
-        session.setAttribute(LOGIN_EMAIL, userInfo.get("userEmail"));
+        // 회원의 이메일이 존재할 때 세션에 해당 이메일과 닉네임, 토큰을 등록
+        if (userInfo.get("userEmail") != null) {
+            session.setAttribute(LOGIN_EMAIL, userInfo.get("userEmail"));
+            session.setAttribute(LOGIN_NICKNAME, userInfo.get("userNick"));
+            session.setAttribute("access_Token", access_Token);
+        }
 
         return "index";
     }
@@ -116,17 +121,34 @@ public class UserController {
     // 로그아웃
     @GetMapping("logout")
     public String logout(HttpSession session) {
-        session.invalidate();
+        String access_Token = (String)session.getAttribute("access_Token");
+
+        if (access_Token != null && !"".equals(access_Token)) {
+            session.removeAttribute("access_Token");
+            session.removeAttribute("userId");
+        } else {
+            session.removeAttribute(LOGIN_ID);
+            session.removeAttribute(LOGIN_EMAIL);
+            session.removeAttribute(LOGIN_NICKNAME);
+        }
         return "index";
     }
 
     // 마이페이지 이동
     @GetMapping("mypage")
-    public String findById(HttpSession session, Model model) {
-        Long userId = (Long) session.getAttribute(LOGIN_ID);
+    public String findById(HttpSession session, @RequestParam(value = "code", required = false) String code, Model model) {
 
-        UserDetailDTO userDetailDTO = us.findById(userId);
-        model.addAttribute("user", userDetailDTO);
+        if (session.getAttribute(LOGIN_ID)!= null) {
+            Long userId = (Long) session.getAttribute(LOGIN_ID);
+
+            UserDetailDTO userDetailDTO = us.findById(userId);
+            model.addAttribute("user", userDetailDTO);
+        } else {
+            String access_Token = us.getKaKaoAccessToken(code);
+            HashMap<String, Object> userInfo = us.getUserInfo(access_Token);
+            // 카카오 로그인 회원 정보 출력
+
+        }
 
         return "user/mypage";
     }
@@ -134,6 +156,7 @@ public class UserController {
     // 마이페이지 회원 정보 수정 폼
     @GetMapping("{userId}")
     public String updateForm(HttpSession session, Model model) {
+
         Long userId = (Long) session.getAttribute(LOGIN_ID);
 
         UserDetailDTO userDetailDTO = us.findById(userId);
