@@ -6,15 +6,19 @@ import com.google.gson.JsonParser;
 import com.jnh.mj.dto.UserDetailDTO;
 import com.jnh.mj.dto.UserLoginDTO;
 import com.jnh.mj.dto.UserSaveDTO;
+import com.jnh.mj.dto.UserUpdateDTO;
 import com.jnh.mj.entity.UserEntity;
 import com.jnh.mj.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,7 +33,7 @@ public class UserServiceImpl implements UserService {
         UserEntity emailCheck = ur.findByUserEmail(userSaveDTO.getUserEmail());
 
         if (emailCheck != null) {
-            throw new IllegalStateException("중복된 이메일 입니다!");
+            throw new IllegalStateException("이미 존재하는 이메일입니다.");
 
         }
         return ur.save(userEntity).getId();
@@ -60,7 +64,7 @@ public class UserServiceImpl implements UserService {
         Optional<UserEntity> userEntityOptional = ur.findById(userId);
         UserEntity userEntity = userEntityOptional.get();
         UserDetailDTO userDetailDTO = UserDetailDTO.toUserDetailDTO(userEntity);
-        return null;
+        return userDetailDTO;
     }
 
     @Override
@@ -189,4 +193,44 @@ public class UserServiceImpl implements UserService {
         return userInfo;
 
     }
+
+    @Override
+    public void update(UserUpdateDTO userUpdateDTO) throws IllegalStateException, IOException {
+
+        // 프로필 사진 저장
+        MultipartFile userProfile = userUpdateDTO.getUserProfile();
+        String userProfileName = userProfile.getOriginalFilename();
+        userProfileName = System.currentTimeMillis() + "-" + userProfileName;
+
+        // 파일 저장 경로
+        String savePath = "C:\\development_jnh\\SpringBoot\\MJ\\src\\main\\resources\\static\\profile\\" + userProfileName;
+
+        if(!userProfile.isEmpty()) {
+            userProfile.transferTo(new File(savePath));
+        }
+
+        userUpdateDTO.setUserProfilename(userProfileName);
+
+        UserEntity userEntity = UserEntity.toUpdateUser(userUpdateDTO);
+
+        ur.save(userEntity);
+
+    }
+
+    @Override
+    public void delete(Long userId) {
+        ur.deleteById(userId);
+    }
+
+    // forEach 반복문으로 UserDetailDTO 리스트에 Entity 값 담기
+    @Override
+    public List<UserDetailDTO> findAll() {
+        List<UserEntity> userEntityList = ur.findAll();
+        List<UserDetailDTO> userList = new ArrayList<>();
+        for (UserEntity u : userEntityList) {
+            userList.add(UserDetailDTO.toUserDetailDTO(u));
+        }
+        return userList;
+    }
+
 }

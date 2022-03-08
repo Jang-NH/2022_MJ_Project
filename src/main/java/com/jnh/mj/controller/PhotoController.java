@@ -1,8 +1,12 @@
 package com.jnh.mj.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/photo/*")
+@RequiredArgsConstructor
 public class PhotoController {
 
     // 글 작성 폼

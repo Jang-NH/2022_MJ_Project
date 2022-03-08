@@ -1,6 +1,7 @@
 package com.jnh.mj.entity;
 
 import com.jnh.mj.dto.UserSaveDTO;
+import com.jnh.mj.dto.UserUpdateDTO;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -17,13 +18,6 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
-
-    @NotNull
-    @Column(length = 20)
-    private String platformType;
-
-    @Column(length = 20)
-    private String accessToken;
 
     @NotNull
     @Column(length = 50, unique = true)
@@ -54,4 +48,15 @@ public class UserEntity {
     }
 
 
+    public static UserEntity toUpdateUser(UserUpdateDTO userUpdateDTO) {
+        UserEntity userEntity = new UserEntity();
+
+        userEntity.setId(userUpdateDTO.getUserId());
+        userEntity.setUserEmail(userUpdateDTO.getUserEmail());
+        userEntity.setUserPassword(userUpdateDTO.getUserPassword());
+        userEntity.setUserNickname(userUpdateDTO.getUserNickname());
+        userEntity.setUserProfilename(userUpdateDTO.getUserProfilename());
+
+        return userEntity;
+    }
 }

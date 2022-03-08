@@ -3,6 +3,8 @@ package com.jnh.mj.controller;
 import com.jnh.mj.dto.UserDetailDTO;
 import com.jnh.mj.dto.UserLoginDTO;
 import com.jnh.mj.dto.UserSaveDTO;
+import com.jnh.mj.dto.UserUpdateDTO;
+import com.jnh.mj.entity.UserEntity;
 import com.jnh.mj.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 import static com.jnh.mj.common.SessionConst.*;
 
@@ -95,7 +99,7 @@ public class UserController {
     }
 
     // 카카오 로그인 API
-    @GetMapping("kakaologin")
+    @PostMapping("kakaologin")
     public String kakaoLogin(@RequestParam(value = "code", required = false) String code, Model model, HttpSession session) throws Exception {
         String access_Token = us.getKaKaoAccessToken(code);
         HashMap<String, Object> userInfo = us.getUserInfo(access_Token);
@@ -117,13 +121,53 @@ public class UserController {
     }
 
     // 마이페이지 이동
+    @GetMapping("mypage")
+    public String findById(HttpSession session, Model model) {
+        Long userId = (Long) session.getAttribute(LOGIN_ID);
+
+        UserDetailDTO userDetailDTO = us.findById(userId);
+        model.addAttribute("user", userDetailDTO);
+
+        return "user/mypage";
+    }
 
     // 마이페이지 회원 정보 수정 폼
+    @GetMapping("{userId}")
+    public String updateForm(HttpSession session, Model model) {
+        Long userId = (Long) session.getAttribute(LOGIN_ID);
+
+        UserDetailDTO userDetailDTO = us.findById(userId);
+        model.addAttribute("user", userDetailDTO);
+
+        return "user/update";
+    }
 
     // 마이페이지 회원 정보 수정 (프로필 사진 저장)
+    @PutMapping("{userId}")
+    public String update(@PathVariable("userId") Long userId, @ModelAttribute UserUpdateDTO userUpdateDTO) throws IllegalStateException, IOException {
+        us.update(userUpdateDTO);
+        return "redirect:/user/" + userId ;
+    }
 
     // 관리자 페이지
+    @GetMapping("admin")
+    public String admin(HttpSession session) {
+        return "user/admin";
+    }
 
-    // 회원 목록
+    // 관리자 페이지 회원 목록
+    @GetMapping("")
+    public String findAll(Model model) {
+        List<UserDetailDTO> userList = us.findAll();
+        model.addAttribute("userList", userList);
+        return "user/findAll";
+    }
+
+    // 관리자가 회원 삭제
+    @DeleteMapping("{userId}")
+    public String delete(@PathVariable("userId") Long userId) {
+        us.delete(userId);
+        return "redirect:/user/findAll";
+    }
 
 }

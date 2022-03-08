@@ -15,5 +15,4 @@ public class UserUpdateDTO {
     private MultipartFile userProfile;
     private String userProfilename;
     private String userNickname;
-    private String userMbti;
 }
