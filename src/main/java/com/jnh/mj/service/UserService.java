@@ -4,6 +4,8 @@ import com.jnh.mj.dto.UserDetailDTO;
 import com.jnh.mj.dto.UserLoginDTO;
 import com.jnh.mj.dto.UserSaveDTO;
 
+import java.util.HashMap;
+
 public interface UserService {
     long save(UserSaveDTO userSaveDTO);
 
@@ -19,5 +21,5 @@ public interface UserService {
 
     String getKaKaoAccessToken(String code);
 
-    String getUserInfo(String access_token);
+    HashMap<String, Object> getUserInfo(String access_token);
 }

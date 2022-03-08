@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
+import java.util.HashMap;
+
 import static com.jnh.mj.common.SessionConst.*;
 
 @Controller
@@ -96,29 +98,15 @@ public class UserController {
     @GetMapping("kakaologin")
     public String kakaoLogin(@RequestParam(value = "code", required = false) String code, Model model, HttpSession session) throws Exception {
         String access_Token = us.getKaKaoAccessToken(code);
-        String userInfo = us.getUserInfo(access_Token);
-        System.out.println("###access_Token#### : " + access_Token);
-        System.out.println("###userInfo#### : " + userInfo);
-        System.out.println("#########" + code);
-        // 해당 이메일로 가입 한 회원이 없다면 회원가입 화면으로 이동 시킴
-        if(userInfo.equals("no")){
-            model.addAttribute("msg","해당 이메일로 회원가입을 먼저 해주세요");
-            model.addAttribute("member", new UserSaveDTO());
-            return "/member/save";
-        } else {
-//            로그인 회원 이메일과 아이디를 세션에 저장
-            session.setAttribute(LOGIN_EMAIL, userInfo);
-            Long memberId = us.findByUserId(userInfo);
-            session.setAttribute(LOGIN_ID, memberId);
+        HashMap<String, Object> userInfo = us.getUserInfo(access_Token);
+        System.out.println("###access_Token### : " + access_Token);
+        System.out.println("###userEmail### : " + userInfo.get("userEmail"));
+        System.out.println("###userNick### : " + userInfo.get("userNick"));
+        System.out.println("###userProfile### : " + userInfo.get("userProfile"));
 
-            String redirectURL = (String) session.getAttribute("redirectURL");
+        session.setAttribute(LOGIN_EMAIL, userInfo.get("userEmail"));
 
-            if (redirectURL != null){
-                return "redirect:" + redirectURL;
-            }else{
-                return "redirect:/board/";
-            }
-        }
+        return "index";
     }
 
     // 로그아웃
