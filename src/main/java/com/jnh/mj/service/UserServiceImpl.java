@@ -157,7 +157,7 @@ public class UserServiceImpl implements UserService {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
-            // 요청에 필요한 Header에 포함될 내용
+            // 요청에 필요한 Header에 포함될 내용 (Bearer 뒤의 공백 중요)
             conn.setRequestProperty("Authorization", "Bearer " + access_Token);
 
             int responseCode = conn.getResponseCode();
