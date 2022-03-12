@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
@@ -16,4 +17,8 @@ public class MarkerEntity {
     @Column(name = "marker_number")
     public Long id;
 
+    // FK, MapBoard 게시글 Number
+    @NotNull
+    @Column
+    private Long boardNumber;
 }
