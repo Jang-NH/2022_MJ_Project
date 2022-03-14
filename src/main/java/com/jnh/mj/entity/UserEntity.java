@@ -44,8 +44,8 @@ public class UserEntity {
     private List<MapBoardEntity> mapBoardEntityList = new ArrayList<>();
 
     // MapHeartEntity 와의 연관관계 (회원 : 찜 = 1:n)
-//    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-//    private List<MapHeartEntity> mapHeartEntityList = new ArrayList<>();
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<MapHeartEntity> mapHeartEntityList = new ArrayList<>();
 
     // CommentEntity 와의 연관관계 (회원 : 댓글 = 1:n)
 //    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
