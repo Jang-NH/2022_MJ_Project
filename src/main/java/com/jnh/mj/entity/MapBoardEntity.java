@@ -34,6 +34,9 @@ public class MapBoardEntity {
     @Column(length = 2500)
     private String boardContents;
 
+    @Column
+    private int mapMarker;
+
     @Column(columnDefinition = "integer default 0")
     private int boardHits;
 
