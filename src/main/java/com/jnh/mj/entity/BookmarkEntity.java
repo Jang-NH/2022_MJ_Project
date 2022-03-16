@@ -9,25 +9,22 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Getter
 @Setter
-@Table(name = "marker_table")
-public class MarkerEntity {
+@Table(name = "bookmark_table")
+public class BookmarkEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "marker_id")
+    @Column(name = "bookmark_id")
     public Long id;
 
-    // MapBoardEntity 와의 연관관계 (마커 : 게시글 = n:1)
+    // UserEntity 와의 연관관계 (찜 : 회원 = n:1)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity userEntity;
+
+    // MapBoardEntity 와의 연관관계 (북마크 : 게시글 = n:1)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private MapBoardEntity mapBoardEntity;
-
-    // 위도
-    @Column
-    private Long markerLatitude;
-
-    // 경도
-    @Column
-    private Long markerLongitude;
 
 }

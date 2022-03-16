@@ -3,7 +3,6 @@ package com.jnh.mj.entity;
 import com.jnh.mj.dto.UserSaveDTO;
 import com.jnh.mj.dto.UserUpdateDTO;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -26,7 +25,7 @@ public class UserEntity {
     private String userEmail;
 
     @NotNull
-    @Column(length = 50)
+    @Column(length = 20)
     private String userPassword;
 
     @NotNull
@@ -43,19 +42,25 @@ public class UserEntity {
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<MapBoardEntity> mapBoardEntityList = new ArrayList<>();
 
-    // MapHeartEntity 와의 연관관계 (회원 : 찜 = 1:n)
+    // BookmarkEntityList 와의 연관관계 (회원 : 찜 = 1:n)
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<MapHeartEntity> mapHeartEntityList = new ArrayList<>();
-
-    // CommentEntity 와의 연관관계 (회원 : 댓글 = 1:n)
-//    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-//    private List<CommentEntity> commentEntityList = new ArrayList<>();
-
-    // CommentReplyEntity 와의 연관관계 (회원 : 답글 = 1:n)
+    private List<BookmarkEntity> bookmarkEntityList = new ArrayList<>();
 
     // PhotoBoardEntity 와의 연관관계 (회원 : 게시글 = 1:n)
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<PhotoBoardEntity> photoBoardEntityList = new ArrayList<>();
 
-    // PhotoHeartEntity 와의 연관관계 (회원 : 좋아요 = 1:n)
+    // HeartEntity 와의 연관관계 (회원 : 좋아요 = 1:n)
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<HeartEntity> heartEntityList = new ArrayList<>();
+
+    // CommentEntity 와의 연관관계 (회원 : 댓글 = 1:n)
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<CommentEntity> commentEntityList = new ArrayList<>();
+
+    // CommentReplyEntity 와의 연관관계 (회원 : 답글 = 1:n)
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<CommentReplyEntity> commentReplyEntityList = new ArrayList<>();
 
 
     public static UserEntity toSaveUser(UserSaveDTO userSaveDTO) {

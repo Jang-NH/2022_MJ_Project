@@ -12,7 +12,8 @@ public class UserUpdateDTO {
     private Long userId;
     private String userEmail;
     private String userPassword;
+    private String userNickname;
     private MultipartFile userProfile;
     private String userProfilename;
-    private String userNickname;
+    private String userMbti;
 }

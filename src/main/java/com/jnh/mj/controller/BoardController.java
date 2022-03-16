@@ -1,13 +1,11 @@
 package com.jnh.mj.controller;
 
-import com.jnh.mj.dto.BoardSaveDTO;
+import com.jnh.mj.dto.MapBoardSaveDTO;
 import com.jnh.mj.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -20,7 +18,7 @@ public class BoardController {
     // 글 작성 폼
     @GetMapping("save")
     public String saveForm(Model model) {
-        model.addAttribute("board", new BoardSaveDTO());
+        model.addAttribute("board", new MapBoardSaveDTO());
         return "board/save";
     }
 
