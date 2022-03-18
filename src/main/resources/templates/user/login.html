@@ -1,13 +1,37 @@
 <!DOCTYPE html>
-<html lagn="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>로그인</title>
-</head>
-<body>
-    <a href="https://kauth.kakao.com/oauth/authorize
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="~{layout/layout}">
+<th:block layout:fragment="content">
+    <div>
+        <a href="https://kauth.kakao.com/oauth/authorize
     ?client_id=a6fe055949ad4e767ae35921bda4946a
     &redirect_uri=http://localhost:8093/user/login
     &response_type=code">로그인</a>
-</body>
+
+        <!-- 로그인 페이지 내용 작성 -->
+        <!-- 로그인 페이지 타임리프 적용 & 카카오 연동 -->
+        <div>
+            <h1 class="pt-2 pb-3" style="color: rgb(26, 188, 156); font-weight: bold; text-align: center;">Login</h1>
+        </div>
+        <div>
+            <form class="text-center g-3 py-2 px-5 mx-5" style="width: 500px; height: 40px;">
+                <div class="col-md-12">
+                    <input type="text" class="form-control my-2" id="email" placeholder="email">
+                </div>
+                <div class="col-md-12">
+                    <input type="password" class="form-control my-3" id="pw" maxlength="20" placeholder="password">
+                </div>
+
+                <div class="col-12">
+                    <button type="submit" class="btn" style="color: rgb(26, 188, 156);">login</button>
+                    <button type="submit" class="btn" style="color: rgb(251, 214, 64);">kakao</button>
+
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</th:block>
 </html>

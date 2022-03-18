@@ -1,10 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>회원가입</title>
-</head>
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="~{layout/layout}">
+<th:block layout:fragment="content">
+    <div>
+        <!-- 회원가입 페이지 내용 작성 -->
+        <!-- 회원가입 페이지 타임리프 적용하기 -->
+    <div>
+        <h1 class="pt-2 pb-3" style="color: rgb(26, 188, 156); font-weight: bold; text-align: center;">Sign up</h1>
+    </div>
+    <div>
+            <form class="text-center g-3 py-2 px-5 mx-5" style="width: 500px; height: 40px;">
+                <div class="col-md-12">
+                    <input type="text" class="form-control my-2" id="nick" placeholder="nickname">
+                </div>
+                <div class="col-md-12">
+                    <input type="text" class="form-control my-2" id="email" placeholder="email">
+                </div>
+                <div class="col-md-12">
+                    <input type="password" class="form-control my-3" id="pw" maxlength="20" placeholder="password">
+                </div>
 
-</body>
+                <div class="col-12">
+                    <button type="submit" class="btn" style="color: rgb(26, 188, 156);">Sign up</button>
+                </div>
+            </form>
+    </div>
+
+    </div>
+</th:block>
 </html>

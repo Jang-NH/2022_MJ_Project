@@ -135,7 +135,7 @@ public class UserController {
     }
 
     // 마이페이지 이동
-    @GetMapping("mypage")
+    @GetMapping("{userId}")
     public String findById(HttpSession session, @RequestParam(value = "code", required = false) String code, Model model) {
 
         if (session.getAttribute(LOGIN_ID)!= null) {
