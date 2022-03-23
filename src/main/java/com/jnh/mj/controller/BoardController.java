@@ -5,8 +5,13 @@ import com.jnh.mj.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/board/*")
@@ -23,6 +28,11 @@ public class BoardController {
     }
 
     // 구글맵 마커 저장 글작성
+    @PostMapping("save")
+    public String save(@Validated @ModelAttribute MapBoardSaveDTO mapBoardSaveDTO) throws IllegalStateException, IOException {
+        bs.save(mapBoardSaveDTO);
+        return "redirect:/board/";
+    }
 
     // 글목록
 
