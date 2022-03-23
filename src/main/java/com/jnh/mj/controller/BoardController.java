@@ -34,7 +34,11 @@ public class BoardController {
         return "redirect:/board/";
     }
 
-    // 글목록
+    // 글목록 (무한스크롤)
+    @GetMapping("")
+    public String paging() {
+        return "/board/findAll";
+    }
 
     // 글 수정 폼
 
