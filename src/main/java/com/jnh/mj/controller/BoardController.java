@@ -6,10 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -41,14 +38,24 @@ public class BoardController {
     }
 
     // 글 수정 폼
+    @GetMapping("{boardId}")
+    public String updateForm() {
+        return "/board/update";
+    }
 
     // 글 수정
+    @PostMapping("{boardId}")
+    public String update() {
+        return "redirect:/board/findById";
+    }
 
     // 글 삭제
+    @DeleteMapping("{boardId}")
+    public String delete() {
+        return "redirect:/board/findAll";
+    }
 
     // 찜
-
-    // 무한스크롤
 
     // 해시태그
 

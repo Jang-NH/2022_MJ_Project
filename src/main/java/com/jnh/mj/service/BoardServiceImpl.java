@@ -13,8 +13,7 @@ public class BoardServiceImpl implements BoardService {
     private final BoardRepository br;
 
     @Override
-    public Long save(MapBoardSaveDTO mapBoardSaveDTO) throws IllegalStateException, IOException {
-
-        return null;
+    public void save(MapBoardSaveDTO mapBoardSaveDTO) throws IllegalStateException, IOException {
+        
     }
 }
