@@ -34,26 +34,31 @@ public class BoardController {
     // 글목록 (무한스크롤)
     @GetMapping("")
     public String paging() {
+
         return "/board/findAll";
     }
 
     // 글 수정 폼
     @GetMapping("{boardId}")
     public String updateForm() {
+
         return "/board/update";
     }
 
     // 글 수정
     @PostMapping("{boardId}")
     public String update() {
-        return "redirect:/board/findById";
+
+        return "redirect:/board/{boardId}";
     }
 
     // 글 삭제
     @DeleteMapping("{boardId}")
     public String delete() {
-        return "redirect:/board/findAll";
+        return "redirect:/board/";
     }
+
+    // 나의 글 조회
 
     // 찜
 

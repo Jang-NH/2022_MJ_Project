@@ -11,9 +11,9 @@ public class MapBoardSaveDTO {
     private String boardWriter;
     private String boardTitle;
     private String boardContents;
+    private String placeName;
     private long markerLatitude;
     private long markerLongitude;
-    private String placeName;
     private String boardHits;
     private String saveTime;
 

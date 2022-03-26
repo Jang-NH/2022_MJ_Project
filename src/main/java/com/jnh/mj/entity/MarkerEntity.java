@@ -30,4 +30,8 @@ public class MarkerEntity {
     @Column
     private Long markerLongitude;
 
+    // 장소 이름
+    @Column
+    private String placeName;
+
 }
