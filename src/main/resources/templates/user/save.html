@@ -5,20 +5,45 @@
 <th:block layout:fragment="content">
     <div>
         <!-- 회원가입 페이지 내용 작성 -->
+        <script>
+            function emailCheck (){
+                const userEmail = document.getElementById('userEmail').value;
+                const emailCheckResult = document.getElementById('email-dup-check');
+                $.ajax({
+                    type: 'post',
+                    url: '/user/emailDuplicate',
+                    data: {'userEmail' : userEmail},
+                    dataType: 'text',
+                    success : function (result) {
+                        if(result == "ok") {
+                            emailCheckResult.style.color = 'green';
+                            emailCheckResult.innerHTML = '이메일이 사용 가능합니다.';
+                        } else {
+                            emailCheckResult.style.color = 'red';
+                            emailCheckResult.innerHTML = '사용 불가능한 이메일입니다.';
+                        }
+                    }, error: function (request, status, error) {
+                        alert('error code :' + request.status + 'message : ' + request.responseText + 'error : ' + error);
+                    }
+                });
+            }
+        </script>
+
         <!-- 회원가입 페이지 타임리프 적용하기 -->
     <div>
         <h1 class="pt-2 pb-3" style="color: rgb(26, 188, 156); font-weight: bold; text-align: center;">Sign up</h1>
     </div>
     <div>
-            <form class="text-center g-3 py-2 px-5 mx-5" style="width: 500px; height: 40px;">
+            <form class="text-center g-3 py-2 px-5 mx-5" style="width: 500px; height: 40px;" action="/user/save" method="post" th:object="${user}">
                 <div class="col-md-12">
-                    <input type="text" class="form-control my-2" id="nick" placeholder="nickname">
+                    <input type="text" th:field="*{userNickname}" th:placeholder="nickname" class="form-control my-2">
                 </div>
                 <div class="col-md-12">
-                    <input type="text" class="form-control my-2" id="email" placeholder="email">
+                    <input type="text" class="form-control my-2" th:field="*{userEmail}" th:onblur="emailCheck()" th:placeholder="email">
+                    <span id="email-dup-check"></span>
                 </div>
                 <div class="col-md-12">
-                    <input type="password" class="form-control my-3" id="pw" maxlength="20" placeholder="password">
+                    <input type="password" class="form-control my-3" th:field="*{userPassword}" maxlength="20" th:placeholder="password">
                 </div>
 
                 <div class="col-12">

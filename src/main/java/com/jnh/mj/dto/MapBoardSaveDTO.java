@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MapBoardSaveDTO {
+    private long boardId;
     private String boardWriter;
     private String boardTitle;
     private String boardContents;
