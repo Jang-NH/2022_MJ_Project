@@ -2,9 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="~{layout/layout}">
-<th:block layout:fragment="content">
-    <div>
-        <!-- 회원가입 페이지 내용 작성 -->
+
+<!-- 공통 헤드 -->
+<th:block th:replace="/layout/fragments/head :: headFragment"></th:block>
+
+        <!-- 회원가입 시 이메일 중복 체크 -->
         <script>
             function emailCheck (){
                 const userEmail = document.getElementById('userEmail').value;
@@ -23,27 +25,70 @@
                             emailCheckResult.innerHTML = '사용 불가능한 이메일입니다.';
                         }
                     }, error: function (request, status, error) {
-                        alert('error code :' + request.status + 'message : ' + request.responseText + 'error : ' + error);
+                        console.log('error code :' + request.status + 'message : ' + request.responseText + 'error : ' + error);
+                    }
+                });
+            }
+        </script>
+        <!-- 회원가입 시 닉네임 중복 체크 -->
+        <script>
+            function nickCheck (){
+                const userNickname = document.getElementById('userNickname').value;
+                const nickCheckResult = document.getElementById('nick-dup-check');
+                $.ajax({
+                    type: 'post',
+                    url: '/user/nickDuplicate',
+                    data: {'userNickname' : userNickname},
+                    dataType: 'text',
+                    success : function (result) {
+                        if(result == "ok") {
+                            nickCheckResult.style.color = 'green';
+                            nickCheckResult.innerHTML = '닉네임이 사용 가능합니다.';
+                        } else {
+                            nickCheckResult.style.color = 'red';
+                            nickCheckResult.innerHTML = '사용 불가능한 닉네임입니다.';
+                        }
+                    }, error: function (request, status, error) {
+                        console.log('error code :' + request.status + 'message : ' + request.responseText + 'error : ' + error);
                     }
                 });
             }
         </script>
 
-        <!-- 회원가입 페이지 타임리프 적용하기 -->
+<div>
+    <th:block th:replace="/layout/fragments/nav :: navbarFragment"></th:block>
+</div>
+
+<th:block layout:fragment="content">
+    <div>
+        <!-- 회원가입 페이지 타임리프 적용 -->
     <div>
         <h1 class="pt-2 pb-3" style="color: rgb(26, 188, 156); font-weight: bold; text-align: center;">Sign up</h1>
     </div>
     <div>
             <form class="text-center g-3 py-2 px-5 mx-5" style="width: 500px; height: 40px;" action="/user/save" method="post" th:object="${user}">
                 <div class="col-md-12">
-                    <input type="text" th:field="*{userNickname}" th:placeholder="nickname" class="form-control my-2">
+                    <label for="userNickname">닉네입</label>
+                    <input id="userNickname" type="text" class="form-control my-2" th:field="*{userNickname}" th:onblur="nickCheck()" th:placeholder="ex)naryun">
+                    <span id="nick-dup-check"></span>
+                    <h6 class="text-danger" th:if="${#fields.hasErrors('userNickname')}" th:errors="*{userNickname}" th:errorclass="field-error"></h6>
+
                 </div>
                 <div class="col-md-12">
-                    <input type="text" class="form-control my-2" th:field="*{userEmail}" th:onblur="emailCheck()" th:placeholder="email">
+                    <label for="userEmail">이메일</label>
+                    <input id="userEmail" type="email" class="form-control my-2" th:field="*{userEmail}" th:onblur="emailCheck()" th:placeholder="ex)mj@naver.com">
                     <span id="email-dup-check"></span>
+                    <h6 class="text-danger" th:if="${#fields.hasErrors('userEmail')}" th:errors="*{userEmail}" th:errorclass="field-error"></h6>
                 </div>
                 <div class="col-md-12">
-                    <input type="password" class="form-control my-3" th:field="*{userPassword}" maxlength="20" th:placeholder="password">
+                    <label for="userPassword">비밀번호</label>
+                    <input id="userPassword" type="password" class="form-control my-3" th:field="*{userPassword}" maxlength="20" th:placeholder="비밀번호 입력">
+                    <h6 class="text-danger" th:if="${#fields.hasErrors('userPassword')}" th:errors="*{userPassword}" th:errorclass="field-error"></h6>
+                </div>
+                <div>
+                    <label for="pwCheck">비밀번호 확인</label>
+                    <input id="pwCheck" type="password" class="form-control my-3" placeholder="비밀번호 확인" onblur="pwCheck()">
+                    <span id="pwCheckResult"></span>
                 </div>
 
                 <div class="col-12">
@@ -54,4 +99,27 @@
 
     </div>
 </th:block>
+<th:block th:replace="/layout/fragments/script :: scriptFragment"></th:block>
+
+<script>
+    function pwCheck() {
+        const inputPassword = $('#pwCheck').val();
+        const userPassword = $('#userPassword').val();
+        const pwCheckResult = document.querySelector('#pwCheckResult');
+
+        if (inputPassword != "") {
+            if(inputPassword == userPassword){
+                pwCheckResult.style.color = 'green';
+                pwCheckResult.innerHTML = '비밀번호가 일치합니다!'
+            }else{
+                pwCheckResult.style.color = 'red';
+                pwCheckResult.innerHTML = '비밀번호가 일치하지 않습니다.'
+            }
+        } else {
+            pwCheckResult.style.color = 'red';
+            pwCheckResult.innerHTML = '비밀번호를 입력해주세요.'
+        }
+    }
+
+</script>
 </html>

@@ -2,6 +2,14 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="~{layout/layout}">
+
+<!-- 공통 헤드 -->
+<th:block th:replace="/layout/fragments/head :: headFragment"></th:block>
+
+    <div>
+        <th:block th:replace="/layout/fragments/nav :: navbarFragment"></th:block>
+    </div>
+
     <th:block layout:fragment="content">
         <div>
             <!-- 메인페이지 내용 작성 -->
@@ -18,4 +26,5 @@
 
         </div>
     </th:block>
+<th:block th:replace="/layout/fragments/script :: scriptFragment"></th:block>
 </html>
