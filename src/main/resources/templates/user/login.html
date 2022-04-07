@@ -6,12 +6,12 @@
 <!-- 공통 헤드 -->
 <th:block th:replace="/layout/fragments/head :: headFragment"></th:block>
 
+<div>
+    <th:block th:replace="/layout/fragments/nav :: navbarFragment"></th:block>
+</div>
+
 <th:block layout:fragment="content">
     <div>
-        <a href="https://kauth.kakao.com/oauth/authorize
-    ?client_id=a6fe055949ad4e767ae35921bda4946a
-    &redirect_uri=http://localhost:8093/user/login
-    &response_type=code">로그인</a>
 
         <!-- 로그인 페이지 내용 작성 -->
         <!-- 로그인 페이지 타임리프 적용 & 카카오 연동 -->
@@ -19,19 +19,31 @@
             <h1 class="pt-2 pb-3" style="color: rgb(26, 188, 156); font-weight: bold; text-align: center;">Login</h1>
         </div>
         <div>
-            <form class="text-center g-3 py-2 px-5 mx-5" style="width: 500px; height: 40px;">
+            <form class="text-center g-3 py-2 px-5 mx-5" style="width: 500px; height: 40px;" action="/user/login" method="post">
+
                 <div class="col-md-12">
-                    <input type="text" class="form-control my-2" id="email" placeholder="email">
+                    <label for="email">이메일</label>
+                    <input type="email" class="form-control my-2" id="email" name="userEmail" placeholder="ex)mj@naver.com">
                 </div>
+
                 <div class="col-md-12">
-                    <input type="password" class="form-control my-3" id="pw" maxlength="20" placeholder="password">
+                    <label for="pw">비밀번호</label>
+                    <input type="password" class="form-control my-3" id="pw" name="userPassword" maxlength="20" placeholder="password">
                 </div>
 
                 <div class="col-12">
                     <button type="submit" class="btn" style="color: rgb(26, 188, 156);">login</button>
-                    <button type="submit" class="btn" style="color: rgb(251, 214, 64);">kakao</button>
-
                 </div>
+                <div>
+                    <a href="https://kauth.kakao.com/oauth/authorize?client_id=a6fe055949ad4e767ae35921bda4946a&redirect_uri=http://localhost:8093/user/login&response_type=code" style="color: rgb(251, 214, 64);">kakao</a>
+                </div>
+         </div>
+
+        <div>
+            <p class="mt-4 text-sm text-center">아직 회원이 아니신가요?
+                <a href="/user/save" class="text-primary text-gradient font-weight-bold">회원가입 하러 가기!</a>
+            </p>
+        </div>
 
             </form>
         </div>
